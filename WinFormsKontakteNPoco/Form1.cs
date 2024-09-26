@@ -9,7 +9,7 @@ namespace WinFormsKontakteNPoco
 {
     public partial class Form1 : Form
     {
-        IDbAccess dbAccess = new DbAccess();
+        DbAccess dbAccess = new DbAccess();
 
         public Form1()
         {
@@ -17,7 +17,7 @@ namespace WinFormsKontakteNPoco
             InitDataGridView();
         }
         string ConnectionString { get; init; } = ConfigurationManager.ConnectionStrings["mariadb"].ConnectionString;
-        
+
         private void InitDataGridView()
         {
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -98,6 +98,12 @@ namespace WinFormsKontakteNPoco
         private void buttonCloseApp_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            List<Contact> lst = dbAccess.SearchOne(textBoxSearch.Text);
+            ShowContacts(lst);
         }
     }
 }

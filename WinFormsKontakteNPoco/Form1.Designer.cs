@@ -44,6 +44,8 @@
             textBoxForename = new TextBox();
             textBoxId = new TextBox();
             dataGridView1 = new DataGridView();
+            textBoxSearch = new TextBox();
+            buttonSearch = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
@@ -51,6 +53,8 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.ControlLight;
+            panel1.Controls.Add(buttonSearch);
+            panel1.Controls.Add(textBoxSearch);
             panel1.Controls.Add(buttonCloseApp);
             panel1.Controls.Add(buttonDelContact);
             panel1.Controls.Add(buttonEditContact);
@@ -203,6 +207,23 @@
             dataGridView1.TabIndex = 1;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
+            // textBoxSearch
+            // 
+            textBoxSearch.Location = new Point(33, 148);
+            textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.Size = new Size(359, 23);
+            textBoxSearch.TabIndex = 14;
+            // 
+            // buttonSearch
+            // 
+            buttonSearch.Location = new Point(398, 147);
+            buttonSearch.Name = "buttonSearch";
+            buttonSearch.Size = new Size(96, 23);
+            buttonSearch.TabIndex = 16;
+            buttonSearch.Text = "Suchen";
+            buttonSearch.UseVisualStyleBackColor = true;
+            buttonSearch.Click += buttonSearch_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -237,5 +258,7 @@
         private Button buttonEditContact;
         private Button buttonCloseApp;
         private Button buttonDelContact;
+        private TextBox textBoxSearch;
+        private Button buttonSearch;
     }
 }

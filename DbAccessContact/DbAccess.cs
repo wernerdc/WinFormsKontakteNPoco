@@ -157,5 +157,27 @@ namespace DbAccessContact
                 Debug.WriteLine(ex);
             }
         }
+
+        public List<Contact> SearchOne(string search)
+        {
+            List<Contact> list = new();
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(ConnectionString);
+                using Database db = new Database(connection);
+                connection.Open();
+                string sql = "select * from contact";
+                if ((search != null) && (search.Length > 0))
+                {
+                    sql += " where concat(forename, name, phone, email) like @0";
+                }
+                list = db.Fetch<Contact>(sql, "%" + search + "%");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return list;
+        }
     }
 }

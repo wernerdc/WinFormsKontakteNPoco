@@ -15,7 +15,9 @@ namespace DbAccessContact
         public void AddOne(Contact element);
         public void UpdateOne(Contact element);
         public void DeleteOne(Contact element);
-        
+        //public List<Contact> SearchOne(string search);
+
+
         //public static abstract bool CheckDatabaseExistence();
         //public static abstract bool CreateDatabase();
         //public static abstract List<Contact> GetAll();
