@@ -1,3 +1,4 @@
+using DbAccessContact;
 using MySqlConnector;
 using NPoco;
 using System.Collections.Generic;
@@ -8,31 +9,15 @@ namespace WinFormsKontakteNPoco
 {
     public partial class Form1 : Form
     {
+        IDbAccess dbAccess = new DbAccess();
+
         public Form1()
         {
             InitializeComponent();
             InitDataGridView();
         }
         string ConnectionString { get; init; } = ConfigurationManager.ConnectionStrings["mariadb"].ConnectionString;
-
-        private List<Contact> LoadContacts()
-        {
-            List<Contact> list = new();
-            try
-            {
-                using MySqlConnection mySqlConnection = new MySqlConnection(ConnectionString);
-                using IDatabase db = new Database(mySqlConnection);
-                mySqlConnection.Open();
-                string sql = "order by name, forename";
-                list = db.Fetch<Contact>(sql);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            return list;
-        }
-
+        
         private void InitDataGridView()
         {
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -50,7 +35,7 @@ namespace WinFormsKontakteNPoco
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            List<Contact> list = LoadContacts();
+            List<Contact> list = dbAccess.GetAll();
             ShowContacts(list);
         }
 
@@ -71,56 +56,11 @@ namespace WinFormsKontakteNPoco
             textBoxEmail.Text = contact.Email;
         }
 
-        private void AddContact(Contact contact)
-        {
-            try
-            {
-                using MySqlConnection connection = new MySqlConnection(ConnectionString);
-                using IDatabase db = new Database(connection);
-                db.Connection.Open();
-                db.Insert(contact);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        }
-
-        private void editContact(Contact contact)
-        {
-            try
-            {
-                using MySqlConnection connection = new MySqlConnection(ConnectionString);
-                using IDatabase db = new Database(connection);
-                db.Connection.Open();
-                db.Update(contact);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        }
-
-        private void DeleteContact(Contact contact)
-        {
-            try
-            {
-                using MySqlConnection connection = new MySqlConnection(ConnectionString);
-                using IDatabase db = new Database(connection);
-                db.Connection.Open();
-                db.Delete(contact);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        }
-
         private void buttonAddContact_Click(object sender, EventArgs e)
         {
             Contact contact = new Contact(textBoxForename.Text, textBoxName.Text, textBoxPhone.Text, textBoxEmail.Text);
-            AddContact(contact);
-            List<Contact> lst = LoadContacts();
+            dbAccess.AddOne(contact);
+            List<Contact> lst = dbAccess.GetAll();
             ShowContacts(lst);
         }
 
@@ -139,8 +79,8 @@ namespace WinFormsKontakteNPoco
                     DateTime.Now,
                     contact.CreatedAt);
 
-            editContact(editedContact);
-            List<Contact> lst = LoadContacts();
+            dbAccess.UpdateOne(editedContact);
+            List<Contact> lst = dbAccess.GetAll();
             ShowContacts(lst);
         }
 
@@ -150,8 +90,8 @@ namespace WinFormsKontakteNPoco
             if (contact == null)
                 return;
 
-            DeleteContact(contact);
-            List<Contact> lst = LoadContacts();
+            dbAccess.DeleteOne(contact);
+            List<Contact> lst = dbAccess.GetAll();
             ShowContacts(lst);
         }
 

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinFormsKontakteNPoco
+namespace DbAccessContact
 {
-    internal class Contact
+    public class Contact
     {
-        public Contact(string forename, string name, string phone, string email)
+        public Contact(string? forename, string? name, string? phone, string? email)
         {
             Forename = forename ?? String.Empty;
             Name = name ?? String.Empty;
@@ -27,6 +27,10 @@ namespace WinFormsKontakteNPoco
             Email = email ?? String.Empty;
             ChangedAt = changedAt;
             CreatedAt = createdAt;
+        }
+
+        public Contact() : this(null, null, null, null)
+        {
         }
 
         public int Id {  get; set; }
